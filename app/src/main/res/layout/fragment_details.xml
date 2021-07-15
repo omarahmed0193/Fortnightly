@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.afterapps.fortnightly.ui.details.DetailsViewModel" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/article_iv"
+                android:layout_width="match_parent"
+                android:layout_height="288dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:imgUrl="@{viewModel.article.imgUrl}"
+                tools:src="@mipmap/ic_launcher" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
+
+            <TextView
+                android:id="@+id/author_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/libre_franklin_bold"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@{viewModel.article.source}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+                tools:text="Author" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/merriweather_black_italic"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@{viewModel.article.title}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textColor="@color/black"
+                tools:text="This is a test title for the layout preview" />
+
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/libre_franklin"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@{viewModel.article.content}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textColor="@color/black"
+                tools:text="This is a test title for the layout preview" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:onClick="@{_ -> viewModel.onContinueReadingClick()}"
+                android:padding="16dp"
+                android:text="@string/button_continue_reading"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </ScrollView>
+</layout>
