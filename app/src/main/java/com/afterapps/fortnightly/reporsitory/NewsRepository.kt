@@ -45,7 +45,7 @@ class NewsRepository @Inject constructor(
         val newsArticles = newsResponse.articles.map { it.asDomainNewsArticle(category) }
         fortnightlyDatabase.withTransaction {
             fortnightlyNewsDao.deleteAllArticles(category)
-            fortnightlyNewsDao.insertArticles(newsArticles)
+            fortnightlyNewsDao.insertArticles(*newsArticles.toTypedArray())
         }
     }
 

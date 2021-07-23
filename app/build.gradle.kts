@@ -114,7 +114,13 @@ dependencies {
 
 
     //Android Test Libraries
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(Libs.junit_junit)
+    androidTestImplementation(Libs.truth)
+    androidTestImplementation(Libs.kotlinx_coroutines_test) {
+        exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-debug")
+    }
+    androidTestImplementation(AndroidX.ArchCore.testing)
+    androidTestImplementation(Libs.turbine)
     androidTestImplementation(AndroidX.Test.Ext.junit)
     androidTestImplementation(AndroidX.Test.Espresso.core)
 }

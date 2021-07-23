@@ -17,7 +17,7 @@ interface FortnightlyNewsDao {
     fun getArticle(articleKey: String): Flow<NewsArticle>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertArticles(topHeadlines: List<NewsArticle>)
+    suspend fun insertArticles(vararg article: NewsArticle)
 
     @Query("DELETE FROM news_articles WHERE articleCategory = :category")
     suspend fun deleteAllArticles(category: String)
