@@ -8,8 +8,8 @@ import com.afterapps.fortnightly.model.datatransfer.asDomainNewsArticle
 import com.afterapps.fortnightly.model.domain.NewsArticle
 import com.afterapps.fortnightly.network.FortnightlyService
 import com.afterapps.fortnightly.util.Resource
+import com.afterapps.fortnightly.util.TimeUtil
 import com.afterapps.fortnightly.util.networkBoundResource
-import com.afterapps.fortnightly.work.RefreshNewsWorker
 import kotlinx.coroutines.flow.Flow
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -17,13 +17,14 @@ import javax.inject.Inject
 class NewsRepository @Inject constructor(
     private val context: Context,
     private val fortnightlyService: FortnightlyService,
-    private val fortnightlyDatabase: FortnightlyDatabase
+    private val fortnightlyDatabase: FortnightlyDatabase,
+    private val timeUtil: TimeUtil
 ) {
 
     private val fortnightlyNewsDao = fortnightlyDatabase.fortnightlyNewsDao()
 
     fun getArticles(category: String): Flow<Resource<List<NewsArticle>>> {
-        RefreshNewsWorker.enqueueRefreshNewsWorker(context, category)
+//        RefreshNewsWorker.enqueueRefreshNewsWorker(context, category)
         return networkBoundResource(
             query = { fortnightlyNewsDao.getAllArticles(category) },
             fetch = { fortnightlyService.getTopHeadlineNews(category) },
@@ -32,7 +33,7 @@ class NewsRepository @Inject constructor(
                 val lastRefreshTimestamp =
                     cachedArticles.minByOrNull { it.lastFetchTimeStamp }?.lastFetchTimeStamp
                 val shouldRefresh = lastRefreshTimestamp == null ||
-                        lastRefreshTimestamp < System.currentTimeMillis() - TimeUnit.HOURS.toMillis(
+                        lastRefreshTimestamp < timeUtil.getCurrentSystemTime() - TimeUnit.HOURS.toMillis(
                     1
                 )
 
@@ -41,8 +42,13 @@ class NewsRepository @Inject constructor(
         )
     }
 
-    private suspend fun saveArticlesToDatabase(newsResponse: NewsResponse, category: String) {
-        val newsArticles = newsResponse.articles.map { it.asDomainNewsArticle(category) }
+    suspend fun saveArticlesToDatabase(newsResponse: NewsResponse, category: String) {
+        val newsArticles = newsResponse.articles.map {
+            it.asDomainNewsArticle(
+                category,
+                timeUtil.getCurrentSystemTime()
+            )
+        }
         fortnightlyDatabase.withTransaction {
             fortnightlyNewsDao.deleteAllArticles(category)
             fortnightlyNewsDao.insertArticles(*newsArticles.toTypedArray())

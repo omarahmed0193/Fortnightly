@@ -43,12 +43,12 @@ data class Source(
     val name: String?
 )
 
-fun Article.asDomainNewsArticle(category: String) = NewsArticle(
+fun Article.asDomainNewsArticle(category: String, currentSystemTime: Long) = NewsArticle(
     url = url ?: "",
     author = author ?: "",
     content = content?.substringBefore("…") ?: "",
     description = description ?: "",
-    lastFetchTimeStamp = System.currentTimeMillis(),
+    lastFetchTimeStamp = currentSystemTime,
     source = source.name ?: "",
     title = title ?: "",
     imgUrl = urlToImage ?: "",

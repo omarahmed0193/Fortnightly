@@ -4,6 +4,7 @@ import android.content.Context
 import com.afterapps.fortnightly.database.FortnightlyDatabase
 import com.afterapps.fortnightly.network.FortnightlyService
 import com.afterapps.fortnightly.reporsitory.NewsRepository
+import com.afterapps.fortnightly.util.TimeUtil
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,8 +21,9 @@ object RepositoryModule {
     fun provideNewsRepository(
         @ApplicationContext appContext: Context,
         fortnightlyService: FortnightlyService,
-        fortnightlyDatabase: FortnightlyDatabase
+        fortnightlyDatabase: FortnightlyDatabase,
+        timeUtil: TimeUtil
     ): NewsRepository {
-        return NewsRepository(appContext, fortnightlyService, fortnightlyDatabase)
+        return NewsRepository(appContext, fortnightlyService, fortnightlyDatabase, timeUtil)
     }
 }

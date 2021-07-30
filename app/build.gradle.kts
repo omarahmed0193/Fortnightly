@@ -112,13 +112,21 @@ dependencies {
     //Work Manager
     implementation(AndroidX.Work.runtimeKtx)
 
+    //Unit Test Libraries
+    testImplementation(Libs.mockk)
+    testImplementation(Libs.truth)
+    testImplementation(Libs.turbine)
+    testImplementation(Libs.kotlinx_coroutines_test) {
+        exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-debug")
+    }
+    testImplementation(Libs.junit_junit)
 
     //Android Test Libraries
-    testImplementation(Libs.junit_junit)
     androidTestImplementation(Libs.truth)
     androidTestImplementation(Libs.kotlinx_coroutines_test) {
         exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-debug")
     }
+    androidTestImplementation(Libs.mockk_android)
     androidTestImplementation(AndroidX.ArchCore.testing)
     androidTestImplementation(Libs.turbine)
     androidTestImplementation(AndroidX.Test.Ext.junit)
