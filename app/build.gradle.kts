@@ -120,6 +120,7 @@ dependencies {
         exclude(group = "org.jetbrains.kotlinx", module = "kotlinx-coroutines-debug")
     }
     testImplementation(Libs.junit_junit)
+    testImplementation(AndroidX.ArchCore.testing)
 
     //Android Test Libraries
     androidTestImplementation(Libs.truth)

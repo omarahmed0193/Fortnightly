@@ -1,7 +1,5 @@
 package com.afterapps.fortnightly.ui.home
 
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.afterapps.fortnightly.reporsitory.NewsRepository
@@ -14,11 +12,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+const val DEFAULT_ARTICLE_CATEGORY = "business"
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val newsRepository: NewsRepository) : ViewModel(),
     NewsArticleReactor {
-
-    private val DEFAULT_ARTICLE_CATEGORY = "business"
 
     sealed class Event {
         data class NavigateToDetails(val articleKey: String) : Event()
