@@ -41,7 +41,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), TabLayout.OnTabSelectedLi
 
         initViews(binding)
 
-        initObservers(binding)
+        initObservers()
     }
 
     private fun initViews(binding: FragmentHomeBinding) {
@@ -59,14 +59,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), TabLayout.OnTabSelectedLi
         binding.newsArticlesRv.addItemDecoration(dividerItemDecoration)
     }
 
-    private fun initObservers(binding: FragmentHomeBinding) {
+    private fun initObservers() {
 
         viewModel.newsArticlesFlow.onEach {
-            (binding.newsArticlesRv.adapter as NewsArticlesAdapter).submitList(it?.data)
             when (it) {
-                is Resource.Error -> handleError(binding)
-                is Resource.Loading -> handleProgress(binding)
-                is Resource.Success -> handleSuccess(binding)
+                is Resource.Error -> showErrorSnackbar()
+                is Resource.Loading -> hideSnackbar()
+                is Resource.Success -> hideSnackbar()
             }
         }.observeInLifecycle(viewLifecycleOwner)
 
@@ -98,24 +97,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), TabLayout.OnTabSelectedLi
         findNavController().navigate(HomeFragmentDirections.navigateToDetails(articleKey))
     }
 
-    private fun handleError(binding: FragmentHomeBinding) {
-        binding.newsArticlesProgress.visibility = View.GONE
-        showErrorSnackbar()
-        binding.newsArticlesRv.visibility = View.VISIBLE
-    }
-
-    private fun handleSuccess(binding: FragmentHomeBinding) {
-        binding.newsArticlesProgress.visibility = View.GONE
-        hideSnackbar()
-        binding.newsArticlesRv.visibility = View.VISIBLE
-    }
-
-    private fun handleProgress(binding: FragmentHomeBinding) {
-        binding.newsArticlesProgress.visibility = View.VISIBLE
-        hideSnackbar()
-        binding.newsArticlesRv.visibility = View.GONE
-    }
-
     override fun onTabSelected(tab: TabLayout.Tab?) {
         tab?.let {
             tabPosition = tab.position
@@ -123,7 +104,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), TabLayout.OnTabSelectedLi
         }
     }
 
-    override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
+    override fun onTabUnselected(tab: TabLayout.Tab?)  = Unit
 
     override fun onTabReselected(tab: TabLayout.Tab?) = Unit
 }

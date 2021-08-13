@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="gone" />
+                app:resourceStatusProgress="@{viewModel.newsArticlesFlow}" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/news_articles_rv"
@@ -83,7 +83,9 @@
                 android:nestedScrollingEnabled="false"
                 android:orientation="vertical"
                 android:padding="16dp"
+                app:dataResourceStatus="@{viewModel.newsArticlesFlow}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:newsData="@{viewModel.newsArticlesFlow.data}"
                 tools:listitem="@layout/list_item_news_article" />
         </FrameLayout>
     </LinearLayout>
